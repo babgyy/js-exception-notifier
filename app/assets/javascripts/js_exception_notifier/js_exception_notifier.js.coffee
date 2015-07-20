@@ -33,6 +33,12 @@ TraceKit.report.subscribe JSExceptionNotifierLogger = (errorReport) ->
     return if window.errorCount > 5
     window.errorCount += 1
 
+    # don't send `errorReport.context` if it's too big
+    contextSize = errorReport.stack[0].context.join().length
+    maxContextSize = 60*1024
+    if contextSize > maxContextSize
+      errorReport.stack[0].context = ["CONTEXT SIZE(#{contextSize} BYTES) IS TOO LARGE TO BE DISPLAYED"]
+
     $.ajax
       url: '/js_exception_notifier'
       data : { errorReport }
