@@ -16,7 +16,7 @@ class JsExceptionNotifierController < ApplicationController
   def javascript_error
     
     custom_configuration = Rails.configuration.try(:x)
-    should_notify = !custom_configuration.blank? && custom_configuration.enable_js_notifications
+    should_notify = !custom_configuration.blank? && custom_configuration.enable_js_notifications.present?
 
     if defined?(ExceptionNotification) && should_notify
 
