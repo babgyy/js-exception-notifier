@@ -14,19 +14,20 @@ class JsExceptionNotifierController < ApplicationController
   end
 
   def javascript_error
-    if defined?(ExceptionNotification) && Rails.env.production?
+    
+    custom_configuration = Rails.configuration.try(:x)
+    should_notify = !custom_configuration.blank? && custom_configuration.enable_js_notifications
+
+    if defined?(ExceptionNotification) && should_notify
 
       data = {}
       data[:session] = session.keys.collect{ |k| {:k=> k, :v=> session[k]}.inspect } if session.loaded?
       data[:errorReport] = params['errorReport']
+      data[:user_id] = current_user.try(:id)
 
       ExceptionNotifier.notify_exception(JSException.new(params['errorReport']['message'].to_s), :data=> data)
-      render json: {}, status: 200
-    elsif Rails.env.test?
-      render json: { status: 'OK', text: params['errorReport'].to_s }, status: 200
-    else
-      render json: { text: params['errorReport'].to_s }, status: 422
     end
+    render json: {}, status: 200
   end
 
   private
