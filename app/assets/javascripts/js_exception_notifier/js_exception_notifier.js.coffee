@@ -45,9 +45,6 @@ TraceKit.report.subscribe JSExceptionNotifierLogger = (errorReport) ->
 
     $.ajax
       url: '/js_exception_notifier'
-      headers: {
-        'X-CSRF-Token': jQuery?('meta[name="csrf-token"]').attr('content')
-      }
       data : { errorReport }
       type : 'POST'
       dataType: 'JSON'
