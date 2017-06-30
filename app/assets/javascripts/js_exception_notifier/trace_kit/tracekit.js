@@ -108,6 +108,7 @@ TraceKit.report = (function reportModuleWrapper() {
      * @param {Function} handler
      */
     function subscribe(handler) {
+      console.log("subscribed handler", JSON.stringify(handler));
         installGlobalHandler();
         handlers.push(handler);
     }
@@ -117,6 +118,7 @@ TraceKit.report = (function reportModuleWrapper() {
      * @param {Function} handler
      */
     function unsubscribe(handler) {
+      console.log("unsubscribed handler", JSON.stringify(handler));
         for (var i = handlers.length - 1; i >= 0; --i) {
             if (handlers[i] === handler) {
                 handlers.splice(i, 1);
@@ -146,6 +148,10 @@ TraceKit.report = (function reportModuleWrapper() {
         if (exception) {
             throw exception;
         }
+    }
+
+    function getHandlers(){
+      return handlers;
     }
 
     var _oldOnerrorHandler, _onErrorHandlerInstalled;
@@ -249,6 +255,7 @@ TraceKit.report = (function reportModuleWrapper() {
 
     report.subscribe = subscribe;
     report.unsubscribe = unsubscribe;
+    report.getHandlers = getHandlers;
     return report;
 }());
 
