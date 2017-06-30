@@ -27,8 +27,8 @@ isExcludedFile = (filename)->
 # Subscribes to TraceKit and sends report via ExceptionNotification gem
 TraceKit.report.subscribe JSExceptionNotifierLogger = (errorReport) ->
   if errorReport.message != '' &&
-      errorReport.stack && errorReport.stack[0] &&
-      errorReport.stack[0].line > 0 &&
+      # errorReport.stack && errorReport.stack[0] &&
+      # errorReport.stack[0].line > 0 &&
       ! isExcludedFile(errorReport.stack[0].url) &&
       ! isExcludedContext(errorReport.stack[0].context?.join())
 

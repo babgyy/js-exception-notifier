@@ -132,6 +132,8 @@ TraceKit.report = (function reportModuleWrapper() {
      */
     function notifyHandlers(stack, isWindowError) {
         var exception = null;
+        console.log("will notify handlers", JSON.stringify(handler));
+        
         if (isWindowError && !TraceKit.collectWindowErrors) {
           return;
         }
